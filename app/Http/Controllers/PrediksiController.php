@@ -122,7 +122,7 @@ class PrediksiController extends Controller
         $chartPredictionDES[] = $lastActual; // titik sambung
         $chartPredictionDES = array_merge($chartPredictionDES, $predictionDataDES);
 
-        return view('prediksi', compact(
+        return $this->responsiveView('prediksi', compact(
             'years', 'actualData', 
             'futureYears', 'predictionDataLR', 'predictionDataDES',
             'allLabels', 'chartActual', 'chartPredictionLR', 'chartPredictionDES',

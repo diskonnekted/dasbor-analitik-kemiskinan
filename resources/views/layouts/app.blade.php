@@ -23,10 +23,12 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-[#f4f4f0] flex flex-col h-screen overflow-hidden text-[#171717] font-sans" id="veda-workspace-shell">
+    <a href="#main-content" class="skip-to-content">Lewati ke konten</a>
+
     <!-- Header Ribbon -->
-    <nav class="sticky top-0 z-50 bg-[#f4f4f0] border-b-2 border-[#171717] px-6 py-4 flex flex-wrap items-center justify-between gap-4 shrink-0 relative shadow-sm">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 border-2 border-[#171717] bg-white overflow-hidden shadow-[2px_2px_0px_0px_#171717] flex items-center justify-center font-serif font-black text-lg rotate-[-2deg]">
+    <header class="sticky top-0 z-50 bg-[#f4f4f0] border-b-2 border-[#171717] px-6 py-4 flex flex-wrap items-center justify-between gap-4 shrink-0 relative shadow-sm">
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-3" aria-label="VEDA Banjarnegara — ke Dasbor">
+            <div class="w-10 h-10 border-2 border-[#171717] bg-white overflow-hidden shadow-[2px_2px_0px_0px_#171717] flex items-center justify-center font-serif font-black text-lg rotate-[-2deg]" aria-hidden="true">
                 V
             </div>
             <div>
@@ -35,14 +37,16 @@
                 </span>
                 <span class="text-[9px] font-mono font-bold text-neutral-500 uppercase tracking-widest block mt-0.5">Kab. Banjarnegara</span>
             </div>
-        </div>
+        </a>
 
-        <nav class="flex items-center gap-6">
-            <a href="{{ route('dashboard') }}" class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('dashboard') ? 'underline decoration-2' : '' }}">Dasbor</a>
-            <a href="{{ route('analisa') }}" class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('analisa') ? 'underline decoration-2' : '' }}">Korelasi</a>
-            <a href="{{ route('klaster') }}" class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('klaster') ? 'underline decoration-2' : '' }}">Klaster</a>
-            <a href="{{ route('prediksi') }}" class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('prediksi') ? 'underline decoration-2' : '' }}">Proyeksi</a>
-            <a href="{{ route('simulasi') }}" class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('simulasi') ? 'underline decoration-2' : '' }}">Simulasi</a>
+        <nav class="flex items-center gap-6" aria-label="Navigasi utama">
+            <a href="{{ route('dashboard') }}" @if(request()->routeIs('dashboard')) aria-current="page" @endif class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('dashboard') ? 'underline decoration-2' : '' }}">Dasbor</a>
+            <a href="{{ route('rekomendasi') }}" @if(request()->routeIs('rekomendasi')) aria-current="page" @endif class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('rekomendasi') ? 'underline decoration-2' : '' }}">Kebijakan</a>
+            <a href="{{ route('makro') }}" @if(request()->routeIs('makro')) aria-current="page" @endif class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('makro') ? 'underline decoration-2' : '' }}">Makro</a>
+            <a href="{{ route('analisa') }}" @if(request()->routeIs('analisa')) aria-current="page" @endif class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('analisa') ? 'underline decoration-2' : '' }}">Korelasi</a>
+            <a href="{{ route('klaster') }}" @if(request()->routeIs('klaster')) aria-current="page" @endif class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('klaster') ? 'underline decoration-2' : '' }}">Klaster</a>
+            <a href="{{ route('prediksi') }}" @if(request()->routeIs('prediksi')) aria-current="page" @endif class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('prediksi') ? 'underline decoration-2' : '' }}">Proyeksi</a>
+            <a href="{{ route('simulasi') }}" @if(request()->routeIs('simulasi')) aria-current="page" @endif class="text-xs font-bold uppercase tracking-wider hover:underline decoration-2 underline-offset-4 {{ request()->routeIs('simulasi') ? 'underline decoration-2' : '' }}">Simulasi</a>
         </nav>
 
         <div class="flex items-center gap-2">
@@ -50,10 +54,16 @@
                 Keluar
             </a>
         </div>
-    </nav>
+    </header>
+
+    <noscript>
+        <div class="bg-[#171717] text-[#f4f4f0] text-center text-xs font-mono font-bold uppercase tracking-widest px-6 py-3 border-b-2 border-[#171717]">
+            Aplikasi ini memerlukan JavaScript aktif untuk menampilkan peta dan grafik interaktif.
+        </div>
+    </noscript>
 
     <!-- Main Content -->
-    <main class="flex-1 flex overflow-hidden w-full m-0 p-0 relative bg-[#f4f4f0]">
+    <main id="main-content" class="flex-1 flex overflow-hidden w-full m-0 p-0 relative bg-[#f4f4f0]">
         @yield('content')
     </main>
     

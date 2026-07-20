@@ -13,6 +13,55 @@ body {
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Accessible keyboard focus — konsisten dengan gaya neo-brutalist */
+*:focus-visible {
+  outline: 3px solid #171717;
+  outline-offset: 2px;
+}
+
+/* Elemen kontrol (tombol/link/input/select) mendapat highlight lebih tegas saat fokus keyboard */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #171717;
+  outline-offset: 2px;
+  box-shadow: 4px 4px 0px 0px #171717;
+}
+
+/* Skip link: tersembunyi sampai difokuskan via keyboard */
+.skip-to-content {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 100;
+  background: #171717;
+  color: #f4f4f0;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid #171717;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: top 0.2s ease;
+}
+.skip-to-content:focus {
+  top: 1rem;
+}
+
+/* Hormati preferensi pengguna yang mengurangi animasi */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Custom Neo-brutalist styling matching pantarhei.arifsusilo.com */
 @layer utilities {
   .border-brutal {

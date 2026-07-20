@@ -59,7 +59,7 @@
             <form method="GET" action="{{ route('landing') }}">
                 <div class="text-[0.6rem] tracking-[2px] font-bold text-[#171717] uppercase mb-2">Pencarian</div>
                 <div class="border-2 border-[#171717] p-2 bg-white text-sm text-[#171717] shadow-[2px_2px_0px_0px_#171717]">
-                    <select name="kecamatan" onchange="this.form.submit()" class="w-full bg-transparent border-none p-0 focus:ring-0 cursor-pointer appearance-none font-mono font-bold">
+                    <select name="kecamatan" aria-label="Pilih kecamatan" onchange="this.form.submit()" class="w-full bg-transparent border-none p-0 focus:ring-0 cursor-pointer appearance-none font-mono font-bold">
                         <option value="Semua">Kabupaten Banjarnegara</option>
                         @foreach($kecamatans as $kec)
                             <option value="{{ $kec }}" {{ $selectedKecamatan === $kec ? 'selected' : '' }}>Kecamatan {{ ucwords(strtolower($kec)) }}</option>
@@ -85,9 +85,9 @@
         </div>
 
         <div class="ml-auto flex items-center gap-4">
-            <button class="bg-[#171717] text-white border-2 border-[#171717] px-6 py-2 text-xs font-black tracking-wider shadow-[2px_2px_0px_0px_#171717] hover:shadow-[4px_4px_0px_0px_#171717] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">RESET</button>
-            <button class="text-[#171717] border-2 border-[#171717] p-2 bg-white shadow-[2px_2px_0px_0px_#171717]">
-                <i data-lucide="filter" class="h-5 w-5"></i>
+            <button type="button" class="bg-[#171717] text-white border-2 border-[#171717] px-6 py-2 text-xs font-black tracking-wider shadow-[2px_2px_0px_0px_#171717] hover:shadow-[4px_4px_0px_0px_#171717] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">RESET</button>
+            <button type="button" aria-label="Filter data" class="text-[#171717] border-2 border-[#171717] p-2 bg-white shadow-[2px_2px_0px_0px_#171717]">
+                <i data-lucide="filter" class="h-5 w-5" aria-hidden="true"></i>
             </button>
         </div>
     </div>
@@ -141,7 +141,7 @@
                 </div>
                 <div>
                     <div class="metric-title mb-1">Target Escape Rate</div>
-                    <div class="font-black text-2xl text-[#171717] font-serif">{{ $metrics['targetRate'] }} orang/detik</div>
+                    <div class="font-black text-2xl text-[#171717] font-mono">{{ $metrics['targetRate'] }} <span class="text-sm text-neutral-500">orang/detik</span></div>
                 </div>
             </div>
 
@@ -152,7 +152,7 @@
                 </div>
                 <div>
                     <div class="metric-title mb-1">Escaped Poverty Today</div>
-                    <div class="font-black text-2xl text-[#171717] font-serif">{{ $metrics['escapedToday'] }}</div>
+                    <div class="font-black text-2xl text-[#171717] font-mono">{{ $metrics['escapedToday'] }}</div>
                 </div>
             </div>
 
@@ -163,7 +163,7 @@
                 </div>
                 <div>
                     <div class="metric-title mb-1">Current Escape Rate</div>
-                    <div class="font-black text-2xl text-[#171717] font-serif">{{ $metrics['currentRate'] }} orang/detik</div>
+                    <div class="font-black text-2xl text-[#171717] font-mono">{{ $metrics['currentRate'] }} <span class="text-sm text-neutral-500">orang/detik</span></div>
                 </div>
             </div>
 
@@ -174,7 +174,7 @@
                 </div>
                 <div>
                     <div class="metric-title mb-1">Fell Into Poverty Today</div>
-                    <div class="font-black text-2xl text-[#171717] font-serif">{{ $metrics['fellToday'] }}</div>
+                    <div class="font-black text-2xl text-[#171717] font-mono">{{ $metrics['fellToday'] }}</div>
                 </div>
             </div>
 

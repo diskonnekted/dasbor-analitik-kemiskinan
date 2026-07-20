@@ -19,7 +19,7 @@ class LandingController extends Controller
         if (!$selectedKecamatan || $selectedKecamatan === 'Semua') {
             $kemiskinanAll = KemiskinanData::orderBy('tahun', 'asc')->get();
             if ($kemiskinanAll->isEmpty()) {
-                return view('landing', ['timelineData' => '{}', 'tahunSekarang' => date('Y'), 'kecamatans' => $kecamatans, 'selectedKecamatan' => '']);
+                return $this->responsiveView('landing', ['timelineData' => '{}', 'tahunSekarang' => date('Y'), 'kecamatans' => $kecamatans, 'selectedKecamatan' => '']);
             }
             $baseYear = $kemiskinanAll->first()->tahun;
             $lastYear = $kemiskinanAll->last()->tahun;
@@ -30,7 +30,7 @@ class LandingController extends Controller
             // Data Per Kecamatan (hanya ada 2022-2024)
             $kesejahteraan = \App\Models\KesejahteraanKecamatan::where('kecamatan', $selectedKecamatan)->orderBy('tahun', 'asc')->get();
             if ($kesejahteraan->isEmpty()) {
-                return view('landing', ['timelineData' => '{}', 'tahunSekarang' => date('Y'), 'kecamatans' => $kecamatans, 'selectedKecamatan' => $selectedKecamatan]);
+                return $this->responsiveView('landing', ['timelineData' => '{}', 'tahunSekarang' => date('Y'), 'kecamatans' => $kecamatans, 'selectedKecamatan' => $selectedKecamatan]);
             }
             $baseYear = $kesejahteraan->first()->tahun;
             $lastYear = $kesejahteraan->last()->tahun;
@@ -98,6 +98,6 @@ class LandingController extends Controller
             'fellToday' => max(0, $fellToday)
         ];
 
-        return view('landing', compact('timelineData', 'tahunSekarang', 'metrics', 'kecamatans', 'selectedKecamatan'));
+        return $this->responsiveView('landing', compact('timelineData', 'tahunSekarang', 'metrics', 'kecamatans', 'selectedKecamatan'));
     }
 }

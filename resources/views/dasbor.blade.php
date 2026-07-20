@@ -23,7 +23,7 @@
                     <div class="absolute left-4 pointer-events-none">
                         <i data-lucide="calendar" class="w-4 h-4 text-[#171717]"></i>
                     </div>
-                    <select name="tahun" onchange="this.form.submit()" class="w-full sm:w-64 appearance-none bg-transparent border-none focus:ring-0 py-3 pl-12 pr-10 text-[#171717] font-mono font-black text-base cursor-pointer">
+                    <select name="tahun" aria-label="Filter tahun data" onchange="this.form.submit()" class="w-full sm:w-64 appearance-none bg-transparent border-none focus:ring-0 py-3 pl-12 pr-10 text-[#171717] font-mono font-black text-base cursor-pointer">
                         <option value="">Semua Tahun (Terbaru)</option>
                         @foreach($availableYears as $year)
                             <option value="{{ $year }}" {{ $tahunFilter == $year ? 'selected' : '' }}>{{ $year }}</option>
@@ -205,7 +205,17 @@
                     }
                 }).addTo(map);
             })
-            .catch(error => console.error('Error loading GeoJSON:', error));
+            .catch(error => {
+                console.error('Error loading GeoJSON:', error);
+                const mapEl = document.getElementById('map');
+                if (mapEl) {
+                    const notice = document.createElement('div');
+                    notice.setAttribute('role', 'alert');
+                    notice.className = 'absolute inset-0 z-[1200] flex items-center justify-center bg-[#f4f4f0]/95';
+                    notice.innerHTML = '<div class="bg-white border-2 border-[#171717] shadow-[4px_4px_0px_0px_#171717] px-6 py-5 text-center max-w-sm"><p class="font-serif font-black text-lg uppercase text-[#171717] mb-1">Peta Gagal Dimuat</p><p class="font-mono font-bold text-xs text-neutral-600">Data batas wilayah tidak dapat diambil. Coba muat ulang halaman.</p></div>';
+                    mapEl.appendChild(notice);
+                }
+            });
 
         // Line Chart: Tren Kemiskinan
         const ctxTrend = document.getElementById('trendChart').getContext('2d');

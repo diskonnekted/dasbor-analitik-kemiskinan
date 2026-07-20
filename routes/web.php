@@ -12,3 +12,6 @@ Route::get('/analisa', [AnalisaController::class, 'index'])->name('analisa');
 Route::get('/prediksi', [PrediksiController::class, 'index'])->name('prediksi');
 Route::get('/klaster', [\App\Http\Controllers\ClusterController::class, 'index'])->name('klaster');
 Route::get('/simulasi', [\App\Http\Controllers\SimulasiController::class, 'index'])->name('simulasi');
+Route::get('/rekomendasi', [\App\Http\Controllers\RekomendasiController::class, 'index'])->name('rekomendasi');
+Route::get('/rekomendasi/cetak/{kecamatan}', [\App\Http\Controllers\RekomendasiController::class, 'cetak'])->name('rekomendasi.cetak')->where('kecamatan', '.*');
+Route::get('/makro', [\App\Http\Controllers\KonteksMakroController::class, 'index'])->name('makro');

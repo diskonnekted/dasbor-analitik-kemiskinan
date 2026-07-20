@@ -74,7 +74,7 @@ class DashboardController extends Controller
 
         $availableYears = KemiskinanData::orderBy('tahun', 'desc')->pluck('tahun');
 
-        return view('dasbor', compact(
+        return $this->responsiveView('dasbor', compact(
             'totalMiskin', 'rataKedalaman', 'rataKeparahan',
             'chartLabels', 'chartDataPenduduk', 'chartDataKedalaman', 'chartDataKeparahan',
             'kesejahteraanMap', 'maxTahunKesejahteraan', 'tahunFilter', 'availableYears',

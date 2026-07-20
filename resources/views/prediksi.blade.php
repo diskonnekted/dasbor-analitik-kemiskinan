@@ -9,8 +9,8 @@
     <div class="relative bg-white border-2 border-[#171717] p-8 md:p-10 shadow-[4px_4px_0px_0px_#171717] flex flex-col xl:flex-row xl:items-center justify-between gap-8">
         
         <div class="relative z-10 max-w-3xl flex items-start gap-6">
-            <a href="{{ route('dashboard') }}" class="mt-2 bg-white text-[#171717] p-3 border-2 border-[#171717] shadow-[2px_2px_0px_0px_#171717] hover:shadow-[4px_4px_0px_0px_#171717] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">
-                <i data-lucide="arrow-left" class="h-6 w-6"></i>
+            <a href="{{ route('dashboard') }}" aria-label="Kembali ke Dasbor" class="mt-2 bg-white text-[#171717] p-3 border-2 border-[#171717] shadow-[2px_2px_0px_0px_#171717] hover:shadow-[4px_4px_0px_0px_#171717] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">
+                <i data-lucide="arrow-left" class="h-6 w-6" aria-hidden="true"></i>
             </a>
             <div>
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-[#171717] text-white text-xs font-mono font-bold tracking-widest uppercase mb-4 border border-[#171717] shadow-[2px_2px_0px_0px_#171717]">

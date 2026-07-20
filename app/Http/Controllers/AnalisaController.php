@@ -16,7 +16,7 @@ class AnalisaController extends Controller
         $kemiskinan = KesejahteraanKecamatan::where('tahun', $tahunKemiskinan)->get()->keyBy('kecamatan');
         
         if ($kemiskinan->isEmpty()) {
-            return view('analisa', ['error' => 'Data kemiskinan belum tersedia.']);
+            return $this->responsiveView('analisa', ['error' => 'Data kemiskinan belum tersedia.']);
         }
 
         // Ambil daftar indikator unik
@@ -89,7 +89,7 @@ class AnalisaController extends Controller
             return abs($b['korelasi']) <=> abs($a['korelasi']);
         });
 
-        return view('analisa', compact('hasilKorelasi', 'scatterData', 'tahunKemiskinan'));
+        return $this->responsiveView('analisa', compact('hasilKorelasi', 'scatterData', 'tahunKemiskinan'));
     }
 
     private function pearsonCorrelation($x, $y)

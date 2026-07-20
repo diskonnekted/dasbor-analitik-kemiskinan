@@ -152,6 +152,6 @@ class ClusterController extends Controller
             }
         }
 
-        return view('cluster', compact('clustersGrouped', 'chartDatasets', 'maxTahun', 'iterations'));
+        return $this->responsiveView('cluster', compact('clustersGrouped', 'chartDatasets', 'maxTahun', 'iterations'));
     }
 }

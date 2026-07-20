@@ -49,6 +49,63 @@
     </div>
     @endif
 
+    <!-- Panduan Membaca Analisa -->
+    <div class="bg-white p-6 md:p-8 border-2 border-[#171717] shadow-[4px_4px_0px_0px_#171717]">
+        <h2 class="text-lg font-serif font-black text-[#171717] mb-2 flex items-center gap-2 uppercase border-b-2 border-[#171717] pb-2">
+            <i data-lucide="book-open" class="w-5 h-5" aria-hidden="true"></i>
+            Cara Membaca Analisa Ini
+        </h2>
+        <p class="text-xs md:text-sm font-mono font-bold text-neutral-600 leading-relaxed mb-6">Halaman ini mengukur <strong class="text-[#171717]">korelasi</strong> — seberapa kuat hubungan antara tiap indikator daerah (misalnya jumlah Posyandu atau kasus TB) dengan jumlah penduduk sangat miskin di 20 kecamatan. Korelasi menunjukkan <em>keterkaitan</em>, bukan sebab-akibat langsung.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- 1. Arah -->
+            <div class="bg-[#f4f4f0] p-5 border-2 border-[#171717] shadow-[2px_2px_0px_0px_#171717]">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-7 h-7 flex items-center justify-center bg-[#171717] text-white font-mono font-black text-xs">1</span>
+                    <h3 class="font-mono font-black text-[11px] uppercase tracking-tight">Arah Hubungan</h3>
+                </div>
+                <ul class="space-y-2 text-[11px] font-mono font-bold text-neutral-600 leading-relaxed">
+                    <li class="flex gap-2"><span class="font-black text-[#171717] min-w-max bg-white border-2 border-[#171717] px-1.5">POSITIF (+)</span> Nilai indikator naik, kemiskinan cenderung <strong class="text-[#171717]">ikut naik</strong>. Ini faktor risiko.</li>
+                    <li class="flex gap-2"><span class="font-black text-[#171717] min-w-max bg-white border-2 border-[#171717] px-1.5">NEGATIF (−)</span> Nilai indikator naik, kemiskinan cenderung <strong class="text-[#171717]">turun</strong>. Ini faktor pelindung.</li>
+                </ul>
+            </div>
+
+            <!-- 2. Kekuatan -->
+            <div class="bg-[#f4f4f0] p-5 border-2 border-[#171717] shadow-[2px_2px_0px_0px_#171717]">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-7 h-7 flex items-center justify-center bg-[#171717] text-white font-mono font-black text-xs">2</span>
+                    <h3 class="font-mono font-black text-[11px] uppercase tracking-tight">Kekuatan (Skor r)</h3>
+                </div>
+                <ul class="space-y-1.5 text-[11px] font-mono font-bold text-neutral-600 leading-relaxed">
+                    <li class="flex justify-between gap-2"><span>0,8 – 1,0</span><span class="font-black text-[#171717]">Sangat Kuat</span></li>
+                    <li class="flex justify-between gap-2"><span>0,6 – 0,8</span><span class="font-black text-[#171717]">Kuat</span></li>
+                    <li class="flex justify-between gap-2"><span>0,4 – 0,6</span><span class="font-black text-[#171717]">Sedang</span></li>
+                    <li class="flex justify-between gap-2"><span>0,2 – 0,4</span><span class="font-black text-[#171717]">Lemah</span></li>
+                    <li class="flex justify-between gap-2"><span>0,0 – 0,2</span><span class="font-black text-[#171717]">Sangat Lemah</span></li>
+                </ul>
+                <p class="text-[10px] font-mono font-bold text-neutral-500 mt-3 leading-relaxed">Yang dinilai adalah nilai mutlaknya. Skor −0,75 sama kuatnya dengan +0,75.</p>
+            </div>
+
+            <!-- 3. Peta Sebaran -->
+            <div class="bg-[#f4f4f0] p-5 border-2 border-[#171717] shadow-[2px_2px_0px_0px_#171717]">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-7 h-7 flex items-center justify-center bg-[#171717] text-white font-mono font-black text-xs">3</span>
+                    <h3 class="font-mono font-black text-[11px] uppercase tracking-tight">Peta Sebaran</h3>
+                </div>
+                <ul class="space-y-2 text-[11px] font-mono font-bold text-neutral-600 leading-relaxed">
+                    <li class="flex gap-2"><span class="font-black text-[#171717] min-w-max">Sumbu X</span> Nilai indikator per kecamatan.</li>
+                    <li class="flex gap-2"><span class="font-black text-[#171717] min-w-max">Sumbu Y</span> Jumlah penduduk sangat miskin.</li>
+                    <li class="flex gap-2"><span class="font-black text-[#171717] min-w-max">Titik</span> Satu kecamatan. Bila titik membentuk garis miring, hubungannya kuat. Bila menyebar acak, hubungannya lemah.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-5 bg-[#171717] text-white p-4 border-2 border-[#171717] flex items-start gap-3">
+            <i data-lucide="lightbulb" class="w-5 h-5 flex-shrink-0 mt-0.5" aria-hidden="true"></i>
+            <p class="text-[11px] font-mono font-bold leading-relaxed">Contoh: bila "Kasus TB Paru" berkorelasi <strong>positif kuat</strong>, kecamatan dengan kasus TB tinggi cenderung memiliki penduduk sangat miskin lebih banyak — sinyal agar intervensi kesehatan dan kemiskinan diarahkan ke wilayah yang sama.</p>
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
         
         <!-- Tabel Ranking Korelasi -->
@@ -60,7 +117,7 @@
                 </h2>
                 
                 <div class="space-y-4">
-                    @foreach($hasilKorelasi as $index => $row)
+                    @forelse($hasilKorelasi as $index => $row)
                     <div class="flex items-center gap-4 p-3 bg-white border-2 border-[#171717] shadow-[2px_2px_0px_0px_#171717]">
                         <!-- Rank Badge -->
                         <div class="w-8 h-8 flex-shrink-0 flex items-center justify-center font-mono font-black text-xs {{ $index === 0 ? 'bg-[#171717] text-white' : 'bg-white text-[#171717] border-2 border-[#171717] shadow-[2px_2px_0px_0px_#171717]' }}">
@@ -88,7 +145,12 @@
                             <span class="text-[9px] uppercase font-mono tracking-widest font-black text-[#171717] bg-[#f4f4f0] border-2 border-[#171717] px-1.5 mt-1">{{ $row['kekuatan'] }}</span>
                         </div>
                     </div>
-                    @endforeach
+                    @empty
+                    <div class="text-center py-12 bg-neutral-100 border-2 border-[#171717] border-dashed">
+                        <i data-lucide="database" class="h-10 w-10 text-neutral-400 mx-auto mb-3" aria-hidden="true"></i>
+                        <p class="text-neutral-600 font-mono font-bold text-xs uppercase">Belum ada data korelasi untuk ditampilkan.</p>
+                    </div>
+                    @endforelse
                 </div>
             </div>
             
