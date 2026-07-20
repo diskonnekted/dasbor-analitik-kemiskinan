@@ -16,10 +16,17 @@ class LandingController extends Controller
         $baseYear = 2018;
         $lastYear = 2024;
 
+        $defaultMetrics = [
+            'currentRate' => 0,
+            'targetRate' => 0,
+            'escapedToday' => 0,
+            'fellToday' => 0,
+        ];
+
         if (!$selectedKecamatan || $selectedKecamatan === 'Semua') {
             $kemiskinanAll = KemiskinanData::orderBy('tahun', 'asc')->get();
             if ($kemiskinanAll->isEmpty()) {
-                return $this->responsiveView('landing', ['timelineData' => '{}', 'tahunSekarang' => date('Y'), 'kecamatans' => $kecamatans, 'selectedKecamatan' => '']);
+                return $this->responsiveView('landing', ['timelineData' => '{}', 'tahunSekarang' => date('Y'), 'metrics' => $defaultMetrics, 'kecamatans' => $kecamatans, 'selectedKecamatan' => '']);
             }
             $baseYear = $kemiskinanAll->first()->tahun;
             $lastYear = $kemiskinanAll->last()->tahun;
@@ -30,7 +37,7 @@ class LandingController extends Controller
             // Data Per Kecamatan (hanya ada 2022-2024)
             $kesejahteraan = \App\Models\KesejahteraanKecamatan::where('kecamatan', $selectedKecamatan)->orderBy('tahun', 'asc')->get();
             if ($kesejahteraan->isEmpty()) {
-                return $this->responsiveView('landing', ['timelineData' => '{}', 'tahunSekarang' => date('Y'), 'kecamatans' => $kecamatans, 'selectedKecamatan' => $selectedKecamatan]);
+                return $this->responsiveView('landing', ['timelineData' => '{}', 'tahunSekarang' => date('Y'), 'metrics' => $defaultMetrics, 'kecamatans' => $kecamatans, 'selectedKecamatan' => $selectedKecamatan]);
             }
             $baseYear = $kesejahteraan->first()->tahun;
             $lastYear = $kesejahteraan->last()->tahun;
