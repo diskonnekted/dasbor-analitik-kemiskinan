@@ -1,1 +1,399 @@
 @import "tailwindcss";
+
+@theme {
+    /* ==== Typography ==== */
+    --font-sans: "CursorGothic", "Inter", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    /* ==== Brand & Accent — Cursor Orange, used scarcely ==== */
+    --color-primary: #f54e00;
+    --color-primary-active: #d04200;
+    --color-on-primary: #ffffff;
+
+    /* ==== Surface ==== */
+    --color-canvas: #f7f7f4;       /* warm cream page floor */
+    --color-canvas-soft: #fafaf7;  /* IDE-pane background */
+    --color-surface-card: #ffffff; /* pure white card surface */
+    --color-surface-strong: #e6e5e0;/* badges, tag pills */
+
+    /* ==== Hairlines ==== */
+    --color-hairline: #e6e5e0;       /* 1px divider */
+    --color-hairline-soft: #efeee8;  /* lighter divider */
+    --color-hairline-strong: #cfcdc4;/* stronger panel outline */
+
+    /* ==== Text ==== */
+    --color-ink: #26251e;          /* display, body emphasis */
+    --color-body: #5a5852;         /* default running text */
+    --color-body-strong: #26251e;
+    --color-muted: #807d72;        /* sub-titles */
+    --color-muted-soft: #a09c92;   /* disabled text */
+
+    /* ==== AI Timeline (signature pastels — in-product only) ==== */
+    --color-timeline-thinking: #dfa88f; /* peach */
+    --color-timeline-grep: #9fc9a2;     /* mint */
+    --color-timeline-read: #9fbbe0;     /* pastel blue */
+    --color-timeline-edit: #c0a8dd;     /* lavender */
+    --color-timeline-done: #c08532;     /* warm gold */
+
+    /* ==== Semantic ==== */
+    --color-success: #1f8a65;
+    --color-error: #cf2d56;
+    --color-warning: #d97706;
+
+    /* ==== Spacing: 80px section rhythm ==== */
+    --spacing-section: 5rem;
+}
+
+@layer base {
+    [x-cloak] { display: none !important; }
+
+    body {
+        font-family: var(--font-sans);
+        background-color: var(--color-canvas);
+        color: var(--color-ink);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+        background: var(--color-primary);
+        color: var(--color-on-primary);
+    }
+}
+
+@layer components {
+    /* =====================================================================
+       Typography tokens — display weight stays at 400 (magazine voice)
+       ===================================================================== */
+    .display-mega { font-size: clamp(2.25rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; letter-spacing: -0.03em; }
+    .display-lg   { font-size: 36px; font-weight: 400; line-height: 1.2; letter-spacing: -0.02em; }
+    .display-md   { font-size: 26px; font-weight: 400; line-height: 1.25; letter-spacing: -0.0125em; }
+    .display-sm   { font-size: 22px; font-weight: 400; line-height: 1.3; letter-spacing: -0.005em; }
+    .title-md     { font-size: 18px; font-weight: 600; line-height: 1.4; letter-spacing: 0; }
+    .title-sm     { font-size: 16px; font-weight: 600; line-height: 1.4; letter-spacing: 0; }
+    .body-md      { font-size: 16px; font-weight: 400; line-height: 1.5; letter-spacing: 0; }
+    .body-tracked { font-size: 16px; font-weight: 400; line-height: 1.5; letter-spacing: 0.005em; }
+    .body-sm      { font-size: 14px; font-weight: 400; line-height: 1.5; letter-spacing: 0; }
+    .body-xs      { font-size: 12px; font-weight: 400; line-height: 1.4; letter-spacing: 0; }
+    .caption      { font-size: 13px; font-weight: 400; line-height: 1.4; letter-spacing: 0; }
+    .caption-uppercase { font-size: 11px; font-weight: 600; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; }
+    .code         { font-family: var(--font-mono); font-size: 13px; font-weight: 400; line-height: 1.5; letter-spacing: 0; }
+    .nav-link     { font-size: 14px; font-weight: 500; line-height: 1.4; letter-spacing: 0; }
+    .button-label { font-size: 14px; font-weight: 500; line-height: 1.0; letter-spacing: 0; }
+
+    /* =====================================================================
+       Buttons
+       ===================================================================== */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: var(--font-sans);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1;
+        cursor: pointer;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-primary {
+        background: var(--color-primary);
+        color: var(--color-on-primary);
+        padding: 10px 18px;
+        height: 40px;
+        border-radius: 8px;             /* rounded.md */
+        border: 1px solid transparent;
+    }
+    .btn-primary:hover  { background: var(--color-primary-active); }
+    .btn-primary:active { background: var(--color-primary-active); }
+
+    .btn-secondary {
+        background: var(--color-surface-card);
+        color: var(--color-ink);
+        border: 1px solid var(--color-hairline-strong);
+        padding: 10px 18px;
+        height: 40px;
+        border-radius: 8px;
+    }
+    .btn-secondary:hover  { border-color: var(--color-ink); }
+    .btn-secondary:active { background: var(--color-canvas-soft); }
+
+    .btn-download {
+        background: var(--color-ink);
+        color: var(--color-canvas);
+        padding: 12px 20px;
+        height: 44px;
+        border-radius: 8px;
+    }
+    .btn-download:hover { opacity: 0.9; }
+
+    .btn-tertiary-text {
+        background: transparent;
+        color: var(--color-ink);
+        padding: 10px 4px;
+        height: 40px;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        border-radius: 4px;
+    }
+    .btn-tertiary-text:hover { color: var(--color-primary); }
+
+    .btn-disabled {
+        background: var(--color-surface-strong);
+        color: var(--color-muted-soft);
+        padding: 10px 18px;
+        height: 40px;
+        border-radius: 8px;
+        cursor: not-allowed;
+    }
+
+    /* =====================================================================
+       Badges & pills
+       ===================================================================== */
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1.4;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background: var(--color-surface-strong);
+        color: var(--color-ink);
+        border-radius: 9999px;
+        padding: 4px 10px;
+        white-space: nowrap;
+    }
+
+    /* =====================================================================
+       AI Timeline signature pills (5 pastel stages)
+       ===================================================================== */
+    .timeline-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1.4;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-radius: 9999px;
+        padding: 4px 10px;
+        white-space: nowrap;
+    }
+    .timeline-thinking { background: var(--color-timeline-thinking); color: var(--color-ink); }
+    .timeline-grep     { background: var(--color-timeline-grep); color: var(--color-ink); }
+    .timeline-read     { background: var(--color-timeline-read); color: var(--color-ink); }
+    .timeline-edit     { background: var(--color-timeline-edit); color: var(--color-ink); }
+    .timeline-done     { background: var(--color-timeline-done); color: var(--color-on-primary); }
+
+    /* =====================================================================
+       Inputs & forms
+       ===================================================================== */
+    .input {
+        width: 100%;
+        font-family: var(--font-sans);
+        font-size: 16px;
+        height: 44px;
+        padding: 12px 16px;
+        background: var(--color-surface-card);
+        color: var(--color-ink);
+        border: 1px solid var(--color-hairline);
+        border-radius: 8px;             /* rounded.md */
+        transition: border-color 0.15s ease;
+    }
+    .input:focus {
+        outline: none;
+        border-color: var(--color-ink);
+    }
+
+    .select {
+        width: 100%;
+        font-family: var(--font-sans);
+        font-size: 14px;
+        height: 40px;
+        padding: 8px 12px;
+        background: var(--color-surface-card);
+        color: var(--color-ink);
+        border: 1px solid var(--color-hairline);
+        border-radius: 8px;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23807d72' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 34px;
+    }
+    .select:focus {
+        outline: none;
+        border-color: var(--color-ink);
+    }
+
+    .textarea {
+        width: 100%;
+        font-family: var(--font-sans);
+        font-size: 16px;
+        padding: 12px 16px;
+        background: var(--color-surface-card);
+        color: var(--color-ink);
+        border: 1px solid var(--color-hairline);
+        border-radius: 8px;
+    }
+    .textarea:focus { outline: none; border-color: var(--color-ink); }
+
+    /* =====================================================================
+       Range slider
+       ===================================================================== */
+    input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 4px;
+        background: var(--color-hairline);
+        border-radius: 9999px;
+        outline: none;
+        cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--color-primary);
+        border: 2px solid var(--color-surface-card);
+        box-shadow: 0 0 0 1px var(--color-primary);
+        border-radius: 9999px;
+        cursor: pointer;
+    }
+    input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: var(--color-primary);
+        border: 2px solid var(--color-surface-card);
+        box-shadow: 0 0 0 1px var(--color-primary);
+        border-radius: 9999px;
+        cursor: pointer;
+    }
+
+    /* =====================================================================
+       Containers
+       ===================================================================== */
+    .panel {
+        background: var(--color-surface-card);
+        border: 1px solid var(--color-hairline);
+        border-radius: 12px;            /* rounded.lg */
+    }
+
+    /* feature card — white card on cream canvas */
+    .feature-card {
+        background: var(--color-surface-card);
+        color: var(--color-ink);
+        border: 1px solid var(--color-hairline);
+        border-radius: 12px;
+        padding: 24px;
+    }
+
+    /* IDE pane (inside ide-mockup-card) */
+    .ide-mockup-card {
+        background: var(--color-surface-card);
+        border: 1px solid var(--color-hairline);
+        border-radius: 12px;
+    }
+    .ide-pane {
+        background: var(--color-canvas-soft);
+        color: var(--color-body);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.5;
+        border-radius: 8px;
+        padding: 16px;
+    }
+
+    /* code block */
+    .code-block {
+        background: var(--color-surface-card);
+        color: var(--color-ink);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.5;
+        border: 1px solid var(--color-hairline);
+        border-radius: 12px;
+        padding: 20px;
+    }
+
+    .section-rule { height: 1px; background: var(--color-hairline); }
+    .section-rule-strong { height: 1px; background: var(--color-hairline-strong); }
+
+    /* Section label */
+    .section-label {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1.4;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-muted);
+    }
+
+    /* list row */
+    .list-row {
+        display: flex;
+        gap: 8px;
+        padding: 8px 0;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    .list-row .marker { color: var(--color-muted); flex-shrink: 0; }
+
+    /* inline link */
+    .link-inline {
+        color: var(--color-ink);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+    .link-inline:hover { color: var(--color-primary); }
+
+    /* =====================================================================
+       ArcGIS (Esri) chrome neutralisation
+       ===================================================================== */
+    .esri-attribution {
+        font-family: var(--font-sans) !important;
+        color: var(--color-muted) !important;
+        background: var(--color-surface-card) !important;
+        font-size: 10px !important;
+    }
+
+    .esri-ui .esri-popup .esri-widget {
+        font-family: var(--font-sans);
+        color: var(--color-ink);
+        background: var(--color-surface-card);
+        border-radius: 12px;
+    }
+
+    .esri-popup__main-container {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    .esri-widget--button {
+        background: var(--color-surface-card) !important;
+        color: var(--color-ink) !important;
+    }
+
+    .thin-scroll::-webkit-scrollbar { width: 6px; }
+    .thin-scroll::-webkit-scrollbar-track { background: var(--color-canvas-soft); }
+    .thin-scroll::-webkit-scrollbar-thumb { background: var(--color-hairline-strong); border-radius: 9999px; }
+
+    .tabular { font-variant-numeric: tabular-nums; }
+}

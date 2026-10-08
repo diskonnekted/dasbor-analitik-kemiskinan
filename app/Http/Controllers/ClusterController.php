@@ -10,7 +10,8 @@ class ClusterController extends Controller
 {
     public function index()
     {
-        $maxTahun = KesejahteraanKecamatan::max('tahun');
+        // Tahun jangkar = tahun terakhir yang datanya lengkap di tabel kesejahteraan DAN bansos.
+        $maxTahun = (int) min(KesejahteraanKecamatan::max('tahun'), BantuanSosial::max('tahun'));
         $kesejahteraan = KesejahteraanKecamatan::where('tahun', $maxTahun)->get();
         $bansos = BantuanSosial::where('tahun', $maxTahun)->get()->keyBy('kecamatan');
 
@@ -32,7 +33,7 @@ class ClusterController extends Controller
                 continue;
             }
 
-            $x = $k->desil_1; // X: Sangat Miskin (Jiwa)
+            $x = $k->desil_1; // X: Kesejahteraan Terendah (Desil 1, Jiwa)
             $y = isset($bansos[$kec]) ? $bansos[$kec]->jumlah_penerima : 0; // Y: Penerima Bansos (KK)
             
             $datasetMap[$kec] = [
@@ -47,7 +48,7 @@ class ClusterController extends Controller
         // --- K-Means Algorithm (k=3) ---
         $k = 3;
         // Inisialisasi Centroid (random atau ambil sample)
-        // Kita sorting berdasarkan X (miskin) untuk menentukan centroid awal agar konsisten
+        // Kita sorting berdasarkan X (kesejahteraan terendah) untuk menentukan centroid awal agar konsisten
         usort($dataset, function($a, $b) { return $a['x'] <=> $b['x']; });
         $n = count($dataset);
         
@@ -105,7 +106,7 @@ class ClusterController extends Controller
             }
         }
 
-        // Tentukan Label Prioritas berdasarkan nilai Centroid X (Miskin terbanyak)
+        // Tentukan Label Prioritas berdasarkan nilai Centroid X (kesejahteraan terendah terbanyak)
         // Sort centroids index based on X
         $cLabels = [];
         foreach ($centroids as $idx => $c) {
@@ -114,14 +115,14 @@ class ClusterController extends Controller
         usort($cLabels, function($a, $b) { return $b['x'] <=> $a['x']; }); // Descending X
         
         $priorityLabels = [];
-        $priorityLabels[$cLabels[0]['idx']] = 'Prioritas Tinggi (Merah)';
-        $priorityLabels[$cLabels[1]['idx']] = 'Prioritas Menengah (Kuning)';
-        $priorityLabels[$cLabels[2]['idx']] = 'Prioritas Rendah (Hijau)';
+        $priorityLabels[$cLabels[0]['idx']] = 'Prioritas Tinggi';
+        $priorityLabels[$cLabels[1]['idx']] = 'Prioritas Menengah';
+        $priorityLabels[$cLabels[2]['idx']] = 'Prioritas Rendah';
 
         $colors = [];
-        $colors[$cLabels[0]['idx']] = '#DC2626'; // Merah
-        $colors[$cLabels[1]['idx']] = '#F59E0B'; // Kuning
-        $colors[$cLabels[2]['idx']] = '#10B981'; // Hijau
+        $colors[$cLabels[0]['idx']] = '#cf2d56'; // Tinggi — error
+        $colors[$cLabels[1]['idx']] = '#f54e00'; // Menengah — primary
+        $colors[$cLabels[2]['idx']] = '#1f8a65'; // Rendah — success
 
         // Group dataset for view
         $clustersGrouped = [
@@ -132,9 +133,9 @@ class ClusterController extends Controller
 
         // Format for Chart.js
         $chartDatasets = [
-            ['label' => 'Prioritas Tinggi', 'data' => [], 'backgroundColor' => '#DC2626'],
-            ['label' => 'Prioritas Menengah', 'data' => [], 'backgroundColor' => '#F59E0B'],
-            ['label' => 'Prioritas Rendah', 'data' => [], 'backgroundColor' => '#10B981'],
+            ['label' => 'Prioritas Tinggi', 'data' => [], 'backgroundColor' => '#cf2d56'],
+            ['label' => 'Prioritas Menengah', 'data' => [], 'backgroundColor' => '#f54e00'],
+            ['label' => 'Prioritas Rendah', 'data' => [], 'backgroundColor' => '#1f8a65'],
         ];
 
         foreach ($dataset as $point) {

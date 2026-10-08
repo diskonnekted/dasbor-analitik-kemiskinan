@@ -22,3 +22,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Bahan referensi & workspace pribadi (jangan di-commit)
+/public/*.pdf
+*.code-workspace

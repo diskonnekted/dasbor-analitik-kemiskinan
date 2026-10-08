@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\KesejahteraanKecamatan;
+use App\Models\BantuanSosial;
 use App\Models\IndikatorKecamatan;
+use App\Models\KesejahteraanKecamatan;
 
 class AnalisaController extends Controller
 {
     public function index(Request $request)
     {
-        $tahunKemiskinan = KesejahteraanKecamatan::max('tahun');
+        // Tahun jangkar = tahun terakhir yang lengkap di kesejahteraan DAN bansos (agar korelasi se-tahun).
+        $tahunKemiskinan = (int) min(KesejahteraanKecamatan::max('tahun'), BantuanSosial::max('tahun'));
         
         // Data Kemiskinan (Y) per kecamatan
         $kemiskinan = KesejahteraanKecamatan::where('tahun', $tahunKemiskinan)->get()->keyBy('kecamatan');
@@ -42,7 +44,7 @@ class AnalisaController extends Controller
             $scatterPoints = [];
 
             foreach ($kemiskinan as $kecamatan => $kem) {
-                // Desil 1 (Sangat Miskin)
+                // Desil 1 — kesejahteraan terendah
                 $yVal = $kem->desil_1;
                 
                 // Cari nilai indikator

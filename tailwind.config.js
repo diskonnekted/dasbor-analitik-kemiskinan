@@ -12,12 +12,31 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: [
+                    'CursorGothic',
+                    'Inter',
+                    'system-ui',
+                    '"Helvetica Neue"',
+                    'Helvetica',
+                    'Arial',
+                    'sans-serif',
+                ],
+                mono: [
+                    'JetBrains Mono',
+                    'ui-monospace',
+                    'SFMono-Regular',
+                    'Menlo',
+                    'Monaco',
+                    'Consolas',
+                    '"Liberation Mono"',
+                    '"Courier New"',
+                    'monospace',
+                ],
             },
             colors: {
-                primary: '#DC2626',
-                secondary: '#1F2937',
-            }
+                primary: '#f54e00',
+                secondary: '#26251e',
+            },
         },
     },
     plugins: [],

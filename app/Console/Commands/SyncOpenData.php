@@ -29,8 +29,12 @@ class SyncOpenData extends Command
         $dataPenduduk = $respPenduduk->json('result.records') ?? [];
 
         foreach ($dataPenduduk as $row) {
+            $tahun = $this->cleanTahun($row['Tahun'] ?? null);
+            if ($tahun === null) {
+                continue;
+            }
             KemiskinanData::updateOrCreate(
-                ['tahun' => $row['Tahun']],
+                ['tahun' => $tahun],
                 [
                     'jumlah_penduduk_miskin' => (float) $row['Jumlah Penduduk miskin (ribu jiwa)'] * 1000,
                     'persentase' => (float) $row['Prosentase penduduk miskin (persen)'],
@@ -44,9 +48,10 @@ class SyncOpenData extends Command
         $dataKedalaman = $respKedalaman->json('result.records') ?? [];
 
         foreach ($dataKedalaman as $row) {
-            if (($row['Kabupaten'] ?? '') === 'Banjarnegara') {
+            $tahun = $this->cleanTahun($row['Tahun'] ?? null);
+            if (($row['Kabupaten'] ?? '') === 'Banjarnegara' && $tahun !== null) {
                 KemiskinanData::updateOrCreate(
-                    ['tahun' => $row['Tahun']],
+                    ['tahun' => $tahun],
                     [
                         'indeks_kedalaman' => (float) $row['Indeks Kedalaman Kemiskinan'],
                     ]
@@ -60,9 +65,10 @@ class SyncOpenData extends Command
         $dataKeparahan = $respKeparahan->json('result.records') ?? [];
 
         foreach ($dataKeparahan as $row) {
-            if (($row['Kabupaten'] ?? '') === 'Banjarnegara') {
+            $tahun = $this->cleanTahun($row['Tahun'] ?? null);
+            if (($row['Kabupaten'] ?? '') === 'Banjarnegara' && $tahun !== null) {
                 KemiskinanData::updateOrCreate(
-                    ['tahun' => $row['Tahun']],
+                    ['tahun' => $tahun],
                     [
                         'indeks_keparahan' => (float) $row['Indeks Keparahan Kemiskinan'],
                     ]
@@ -77,10 +83,14 @@ class SyncOpenData extends Command
         $dataKesejahteraan = $respKesejahteraan->json('result.records') ?? [];
 
         foreach ($dataKesejahteraan as $row) {
+            $tahun = $this->cleanTahun($row['Tahun'] ?? null);
+            if ($tahun === null) {
+                continue;
+            }
             \App\Models\KesejahteraanKecamatan::updateOrCreate(
                 [
-                    'tahun' => $row['Tahun'],
-                    'kecamatan' => strtoupper($row['Kecamatan'])
+                    'tahun' => $tahun,
+                    'kecamatan' => $this->normalizeKecamatan($row['Kecamatan'] ?? '')
                 ],
                 [
                     'desil_1' => (int) $row['Status Kesejahteraan 1'],
@@ -98,10 +108,14 @@ class SyncOpenData extends Command
         $dataBansos = $respBansos->json('result.records') ?? [];
 
         foreach ($dataBansos as $row) {
+            $tahun = $this->cleanTahun($row['Tahun'] ?? null);
+            if ($tahun === null) {
+                continue;
+            }
             \App\Models\BantuanSosial::updateOrCreate(
                 [
-                    'tahun' => $row['Tahun'],
-                    'kecamatan' => strtoupper($row['Kecamatan'])
+                    'tahun' => $tahun,
+                    'kecamatan' => $this->normalizeKecamatan($row['Kecamatan'] ?? '')
                 ],
                 [
                     'jumlah_penerima' => (int) $row['Penerima Bantuan (Kepala Keluarga)'],
@@ -117,8 +131,12 @@ class SyncOpenData extends Command
         $respDanaDesa = Http::get($baseUrl, ['resource_id' => '525adb63-e41e-49a6-9067-f3a552e23649', 'limit' => 1000]);
         $dataDanaDesa = $respDanaDesa->json('result.records') ?? [];
         foreach ($dataDanaDesa as $row) {
+            $tahun = $this->cleanTahun($row['Tahun'] ?? null);
+            if ($tahun === null) {
+                continue;
+            }
             \App\Models\IndikatorKecamatan::updateOrCreate(
-                ['tahun' => $row['Tahun'], 'kecamatan' => strtoupper($row['Kecamatan']), 'nama_indikator' => 'Alokasi Dana Desa'],
+                ['tahun' => $tahun, 'kecamatan' => $this->normalizeKecamatan($row['Kecamatan'] ?? ''), 'nama_indikator' => 'Alokasi Dana Desa'],
                 ['kategori' => 'Pemerintah', 'nilai' => (float) $row['Alokasi Dana']]
             );
         }
@@ -127,6 +145,10 @@ class SyncOpenData extends Command
         $respBencana = Http::get($baseUrl, ['resource_id' => '9f2daa38-dd6a-4df5-9b4e-cff693327c67', 'limit' => 1000]);
         $dataBencana = $respBencana->json('result.records') ?? [];
         foreach ($dataBencana as $row) {
+            $tahun = $this->cleanTahun($row['Tahun'] ?? null);
+            if ($tahun === null) {
+                continue;
+            }
             $totalBencana = 0;
             $fields = ['Banjir', 'Gempa Bumi', 'Tanah Longsor', 'Angin Kencang', 'Kebakaran'];
             foreach ($fields as $field) {
@@ -134,7 +156,7 @@ class SyncOpenData extends Command
                 if ($val !== '-') $totalBencana += (int) $val;
             }
             \App\Models\IndikatorKecamatan::updateOrCreate(
-                ['tahun' => $row['Tahun'], 'kecamatan' => strtoupper($row['Kecamatan']), 'nama_indikator' => 'Kejadian Bencana'],
+                ['tahun' => $tahun, 'kecamatan' => $this->normalizeKecamatan($row['Kecamatan'] ?? ''), 'nama_indikator' => 'Kejadian Bencana'],
                 ['kategori' => 'Lingkungan', 'nilai' => $totalBencana]
             );
         }
@@ -143,20 +165,53 @@ class SyncOpenData extends Command
         $respNakes = Http::get($baseUrl, ['resource_id' => 'd5bd29e4-1fe3-4876-9f1c-fa922bfebb21', 'limit' => 1000]);
         $dataNakes = $respNakes->json('result.records') ?? [];
         foreach ($dataNakes as $row) {
+            $tahun = $this->cleanTahun($row['Tahun'] ?? null);
+            if ($tahun === null) {
+                continue;
+            }
             \App\Models\IndikatorKecamatan::updateOrCreate(
-                ['tahun' => $row['Tahun'], 'kecamatan' => strtoupper($row['Kecamatan']), 'nama_indikator' => 'Jumlah Tenaga Kesehatan'],
+                ['tahun' => $tahun, 'kecamatan' => $this->normalizeKecamatan($row['Kecamatan'] ?? ''), 'nama_indikator' => 'Jumlah Tenaga Kesehatan'],
                 ['kategori' => 'Kesehatan', 'nilai' => (int) $row['Total']]
             );
         }
 
         // D. Bantuan Sosial (from previous fetch $dataBansos)
         foreach ($dataBansos as $row) {
+            $tahun = $this->cleanTahun($row['Tahun'] ?? null);
+            if ($tahun === null) {
+                continue;
+            }
             \App\Models\IndikatorKecamatan::updateOrCreate(
-                ['tahun' => $row['Tahun'], 'kecamatan' => strtoupper($row['Kecamatan']), 'nama_indikator' => 'Penerima Bantuan Sosial'],
+                ['tahun' => $tahun, 'kecamatan' => $this->normalizeKecamatan($row['Kecamatan'] ?? ''), 'nama_indikator' => 'Penerima Bantuan Sosial'],
                 ['kategori' => 'Sosial', 'nilai' => (int) $row['Penerima Bantuan (Kepala Keluarga)']]
             );
         }
 
         $this->info('Sinkronisasi selesai!');
+    }
+
+    /**
+     * Normalisasi nilai tahun dari sumber. Mengembalikan integer hanya untuk
+     * tahun yang masuk akal (2000-2100); null jika tidak valid (mis. '77').
+     */
+    private function cleanTahun($value): ?int
+    {
+        $tahun = (int) trim((string) $value);
+
+        return ($tahun >= 2000 && $tahun <= 2100) ? $tahun : null;
+    }
+
+    /**
+     * Normalisasi nama kecamatan: uppercase + pemetaan ejaan resmi.
+     */
+    private function normalizeKecamatan($value): string
+    {
+        $kecamatan = strtoupper(trim((string) $value));
+
+        $penulisanResmi = [
+            'PURWOREJA KLAMPOK' => 'PURWAREJA KLAMPOK',
+        ];
+
+        return $penulisanResmi[$kecamatan] ?? $kecamatan;
     }
 }
